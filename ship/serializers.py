@@ -11,9 +11,8 @@ class OwnerSerializer(serializers.ModelSerializer):
         model = Customer
         fields = ('id', 'name', 'phone', 'address')
 
-    @staticmethod
-    def get_full_name(obj):
-        return obj.account.user.get_full_name()
+    def get_full_name(self, obj):
+        return obj.user.get_full_name()
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -22,8 +21,8 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ('id', 'name', 'from_address', 'to_address', 'description',
-                  'price', 'ship_cost', 'status', 'types', 'owner')
-        depth = 1
+                  'price', 'ship_cost', 'status', 'type', 'owner', 'commodities')
+        depth = 2
         read_only_fields = ('shipper', 'status')
 
 
@@ -33,12 +32,10 @@ class ShipperSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Shipper
-        fields = ('id', 'name', 'address', 'phone', 'email', 'received_orders')
+        fields = ('id', 'name', 'address', 'phone', 'email', 'ratting', 'balance')
 
-    @staticmethod
-    def get_email(obj):
-        return obj.account.user.email
+    def get_email(self, obj):
+        return obj.user.email
 
-    @staticmethod
-    def get_full_name(obj):
-        return obj.account.user.get_full_name()
+    def get_full_name(self, obj):
+        return obj.user.get_full_name()

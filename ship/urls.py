@@ -11,5 +11,7 @@ router.register(r'orders', views.OrderViewSet)
 urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^login/$', v.obtain_auth_token),
-    url(r'^search/map/(?P<lat>[0-9]+\.[0-9]{0,9})/(?P<lng>[0-9]+\.[0-9]{0,9})/$', views.search_map)
+    url(r'^search/map/(?P<lat>[0-9]+\.[0-9]{0,9})/(?P<lng>[0-9]+\.[0-9]{0,9})/$', views.search_map),
+    url(r'^received/orders/$', views.get_received_orders),
+    url(r'^orders/(?P<pk>[0-9]+)/register', views.receive_order)
 ]

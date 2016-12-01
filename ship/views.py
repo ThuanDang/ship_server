@@ -18,12 +18,12 @@ class OrderViewSet(viewsets.ModelViewSet):
                           IsOwnerOrReadOnly)
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user.account.customer)
+        serializer.save(owner=self.request.user.customer)
 
 
 @api_view(['GET'])
-def received_order(request, pk):
-    if request.user.account.shipper.received_orders(pk):
+def receive_order(request, pk):
+    if request.user.shipper.receive_order(pk):
         return Response(status=status.HTTP_200_OK)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
@@ -36,6 +36,16 @@ def search_map(request, lat, lng):
 
     serializer = OrderSerializer(data, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_received_orders(request):
+    data = request.user.account.all()
+    serializer = OrderSerializer(data, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
 
 
 
